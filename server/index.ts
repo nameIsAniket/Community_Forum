@@ -1,7 +1,6 @@
-import express,{ Request, Response, NextFunction }  from "express";
+import express,{ Request, Response }  from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
-import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -15,35 +14,11 @@ app.use(express.json());
 interface AuthenticatedRequest extends Request {
     user?: {
       id: string;
-      name?: string;
-      email?: string;
-      image?: string;
     };
   }
 
-const authenticate = async (
-    req:AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-) => {
-  const session = await getSession({ req });
-  
-  if (!session) {
-    res.status(401).json({ error: "Unauthorized" });
-    return;
-  }
-  
-  req.user = {
-    id: session.user.id,
-    name: session.user.name ?? undefined,
-    email: session.user.email ?? undefined,
-    image: session.user.image ?? undefined,
-  };
-  next();
-};
-
 // Forum endpoints
-app.get("/api/forums", async (req: Request, res: Response) => {
+app.get("/forums", async (req: Request, res: Response) => {
 
   try {
     const forums = await prisma.forum.findMany({
@@ -70,7 +45,7 @@ app.get("/api/forums", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/api/forums/:id", async (req: Request, res: Response) => {
+app.get("/forums/:id", async (req: Request, res: Response) => {
   try {
     const forum = await prisma.forum.findUnique({
       where: { id: req.params.id },
@@ -109,7 +84,7 @@ app.get("/api/forums/:id", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/api/forums", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+app.post("/forums", async (req: AuthenticatedRequest, res: Response) => {
   const { title, description, tags } = req.body;
   
   if (!title || !description) {
@@ -133,7 +108,7 @@ app.post("/api/forums", authenticate, async (req: AuthenticatedRequest, res: Res
   }
 });
 
-app.put("/api/forums/:id", authenticate, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+app.put("/forums/:id", async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const { title, description, tags } = req.body;
   const forumId = req.params.id;
   
@@ -167,7 +142,7 @@ app.put("/api/forums/:id", authenticate, async (req: AuthenticatedRequest, res: 
   }
 });
 
-app.delete("/api/forums/:id", authenticate, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+app.delete("/forums/:id", async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const forumId = req.params.id;
   
   try {
@@ -196,7 +171,7 @@ app.delete("/api/forums/:id", authenticate, async (req: AuthenticatedRequest, re
 });
 
 // Comment endpoints
-app.post("/api/forums/:id/comments", authenticate, async (req: AuthenticatedRequest, res: Response):Promise<void> => {
+app.post("/forums/:id/comments", async (req: AuthenticatedRequest, res: Response):Promise<void> => {
   const { content } = req.body;
   const forumId = req.params.id;
   
@@ -238,7 +213,7 @@ app.post("/api/forums/:id/comments", authenticate, async (req: AuthenticatedRequ
   }
 });
 
-app.delete("/api/comments/:id", authenticate, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+app.delete("/comments/:id", async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const commentId = req.params.id;
   
   try {

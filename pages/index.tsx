@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchForums() {
       try {
-        const response = await fetch('/api/forums');
+        const response = await fetch('/api/proxy/forums');
         if (response.ok) {
           const data = await response.json();
           setForums(data);

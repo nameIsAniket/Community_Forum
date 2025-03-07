@@ -31,7 +31,7 @@ export default function CreateForum() {
     setError('');
     
     try {
-      const response = await fetch('/api/forums', {
+      const response = await fetch('/api/proxy/forums', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
