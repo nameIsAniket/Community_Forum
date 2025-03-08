@@ -1,6 +1,7 @@
-import express,{ Request, Response }  from "express";
+import express,{ Request as ExpressRequest, Response }  from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
+
 
 const prisma = new PrismaClient();
 const app = express();
@@ -11,11 +12,26 @@ app.use(express.json());
 
 // Middleware to check authentication
 
-interface AuthenticatedRequest extends Request {
+  export interface Request extends ExpressRequest {
     user?: {
       id: string;
     };
   }
+
+// This middleware will parse the Authorization header and attach req.user
+app.use((req, res, next) => {
+  console.log("Request headers:", req.headers);
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    const parts = authHeader.split(" ");
+    if (parts.length === 2 && parts[0] === "Bearer") {
+      const userId = parts[1];
+      (req as Request).user = { id: userId };
+      console.log("User attached:", (req as Request).user);
+    }
+  }
+  next();
+});
 
 // Forum endpoints
 app.get("/forums", async (req: Request, res: Response) => {
@@ -45,7 +61,7 @@ app.get("/forums", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/forums/:id", async (req: Request, res: Response) => {
+app.get("/forums/:id", async (req: Request, res: Response):Promise<void> => {
   try {
     const forum = await prisma.forum.findUnique({
       where: { id: req.params.id },
@@ -75,7 +91,8 @@ app.get("/forums/:id", async (req: Request, res: Response) => {
     });
     
     if (!forum) {
-      return res.status(404).json({ error: "Forum not found" });
+      res.status(404).json({ error: "Forum not found" });
+      return
     }
     
     res.json(forum);
@@ -84,7 +101,7 @@ app.get("/forums/:id", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/forums", async (req: AuthenticatedRequest, res: Response) => {
+app.post("/forums", async (req: Request, res: Response) => {
   const { title, description, tags } = req.body;
   
   if (!title || !description) {
@@ -92,23 +109,47 @@ app.post("/forums", async (req: AuthenticatedRequest, res: Response) => {
     return;
   }
   
+  if(req.user === undefined){
+    res.status(401).json({ error: "Unauthorized req.user not found" });
+    return;
+  }
+  const user = await prisma.user.findUnique({
+    where: { id: req.user.id },
+  });
+  //console.log("user",user);
+  if (!user) {
+    console.error("User not found for id:", req.user.id);
+    res.status(400).json({ error: "User not found" });
+    return
+  }
+  
   try {
+    //console.log("Creating forum for user:", req.user.id, "with title:", title, "and tags:", tags);
+    
     const forum = await prisma.forum.create({
       data: {
         title,
         description,
         tags: tags ? JSON.stringify(tags) : null,
-        userId: req.user ? req.user.id : "",
+        userId: req.user.id
       },
     });
+
+    //console.log("Forum created:", forum);
     
     res.status(201).json(forum);
-  } catch {
-    res.status(500).json({ error: "Failed to create forum" });
+    return
+  } catch(error) {
+    //console.error("Error creating forum:", error);
+    res.status(500).json({ 
+      error: "Failed to create forum", 
+      error_msg: error instanceof Error ? error.message : "Unknown error" 
+    });
+    return;
   }
 });
 
-app.put("/forums/:id", async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+app.put("/forums/:id", async (req: Request, res: Response): Promise<void> => {
   const { title, description, tags } = req.body;
   const forumId = req.params.id;
   
@@ -142,7 +183,7 @@ app.put("/forums/:id", async (req: AuthenticatedRequest, res: Response): Promise
   }
 });
 
-app.delete("/forums/:id", async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+app.delete("/forums/:id", async (req: Request, res: Response): Promise<void> => {
   const forumId = req.params.id;
   
   try {
@@ -171,7 +212,7 @@ app.delete("/forums/:id", async (req: AuthenticatedRequest, res: Response): Prom
 });
 
 // Comment endpoints
-app.post("/forums/:id/comments", async (req: AuthenticatedRequest, res: Response):Promise<void> => {
+app.post("/forums/:id/comments", async (req: Request, res: Response):Promise<void> => {
   const { content } = req.body;
   const forumId = req.params.id;
   
@@ -213,7 +254,7 @@ app.post("/forums/:id/comments", async (req: AuthenticatedRequest, res: Response
   }
 });
 
-app.delete("/comments/:id", async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+app.delete("/comments/:id", async (req: Request, res: Response): Promise<void> => {
   const commentId = req.params.id;
   
   try {

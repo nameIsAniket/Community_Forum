@@ -43,7 +43,7 @@ export default function ForumDetail() {
 
     async function fetchForum() {
       try {
-        const response = await fetch(`/api/forums/${id}`);
+        const response = await fetch(`/api/proxy/forums/${id}`);
         if (response.ok) {
           const data = await response.json();
           setForum(data);
@@ -64,7 +64,7 @@ export default function ForumDetail() {
     if (!forum || !confirm('Are you sure you want to delete this forum?')) return;
 
     try {
-      const response = await fetch(`/api/forums/${forum.id}`, {
+      const response = await fetch(`/api/proxy/forums/${forum.id}`, {
         method: 'DELETE',
       });
       
@@ -90,7 +90,7 @@ export default function ForumDetail() {
     setSubmitting(true);
     
     try {
-      const response = await fetch(`/api/forums/${forum?.id}/comments`, {
+      const response = await fetch(`/api/proxy/forums/${forum?.id}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ export default function ForumDetail() {
     if (!confirm('Are you sure you want to delete this comment?')) return;
 
     try {
-      const response = await fetch(`/api/comments/${commentId}`, {
+      const response = await fetch(`/api/proxy/comments/${commentId}`, {
         method: 'DELETE',
       });
       
