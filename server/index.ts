@@ -20,14 +20,14 @@ app.use(express.json());
 
 // This middleware will parse the Authorization header and attach req.user
 app.use((req, res, next) => {
-  console.log("Request headers:", req.headers);
+  //console.log("Request headers:", req.headers);
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const parts = authHeader.split(" ");
     if (parts.length === 2 && parts[0] === "Bearer") {
       const userId = parts[1];
       (req as Request).user = { id: userId };
-      console.log("User attached:", (req as Request).user);
+      //console.log("User attached:", (req as Request).user);
     }
   }
   next();
@@ -211,7 +211,6 @@ app.delete("/forums/:id", async (req: Request, res: Response): Promise<void> => 
   }
 });
 
-// Comment endpoints
 app.post("/forums/:id/comments", async (req: Request, res: Response):Promise<void> => {
   const { content } = req.body;
   const forumId = req.params.id;

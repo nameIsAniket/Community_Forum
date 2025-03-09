@@ -66,6 +66,9 @@ export default function ForumDetail() {
     try {
       const response = await fetch(`/api/proxy/forums/${forum.id}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       
       if (response.ok) {
@@ -125,6 +128,9 @@ export default function ForumDetail() {
     try {
       const response = await fetch(`/api/proxy/comments/${commentId}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       
       if (response.ok) {

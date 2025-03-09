@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 interface Forum {
   id: string;
@@ -80,7 +81,7 @@ export default function Home() {
                 <div className="flex items-center">
                   <div className="mr-2">
                     {forum.user.image ? (
-                      <img
+                      <Image
                         src={forum.user.image}
                         alt={forum.user.name || 'User'}
                         className="w-6 h-6 rounded-full"
