@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 
 interface Forum {
@@ -20,7 +19,6 @@ interface Forum {
 }
 
 export default function Home() {
-  const { data: session } = useSession();
   const [forums, setForums] = useState<Forum[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,18 +42,6 @@ export default function Home() {
 
   return (
     <Layout title="Community Forum - Home">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Forums</h1>
-        {session && (
-          <Link
-            href="/create-forum"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-          >
-            Create New Forum
-          </Link>
-        )}
-      </div>
-
       {loading ? (
         <div className="text-center py-10">Loading forums...</div>
       ) : forums.length === 0 ? (
@@ -67,7 +53,7 @@ export default function Home() {
           {forums.map((forum) => (
             <div
               key={forum.id}
-              className="border rounded-lg p-6 shadow-sm hover:shadow-md transition"
+              className="border-b border-gray-700 p-6 shadow-sm hover:shadow-md transition"
             >
               <Link href={`/forums/${forum.id}`}>
                 <h2 className="text-xl font-semibold mb-2">{forum.title}</h2>

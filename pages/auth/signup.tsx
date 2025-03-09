@@ -37,53 +37,56 @@ export default function SignUp() {
 
   return (
     <Layout title="Sign Up">
-      <div className="max-w-md mx-auto my-16 p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Sign Up</h1>
+      <div className="max-w-md mx-auto my-16 p-6 bg-black border border-gray-800 text-white rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold text-center mb-6">Welcome to Community Forum</h1>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name</label>
+            <label className="block text-sm font-semibold text-gray-300 mb-2">User name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              placeholder="User Name"
               required
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full h-12 border-gray-600 bg-gray-800 text-white rounded-md shadow-sm px-3"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-semibold text-gray-300 mb-2">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="projectforum@mm.com"
               required
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full h-12 border-gray-600 bg-gray-800 text-white rounded-md shadow-sm px-3"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm  font-semibold text-gray-300 mb-2">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="********"
               required
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full h-12 border-gray-600 bg-gray-800 text-white rounded-md shadow-sm px-3"
             />
           </div>
           <button
             type="submit"
-            className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-blue-600 text-white hover:bg-blue-700"
+            className="w-full flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#2727A] text-white mt-8"
           >
             Sign Up
           </button>
         </form>
-        <p className="mt-4 text-center">
-            <Link href="/auth/signin" className="text-blue-600 hover:underline">
-                Sign in
-            </Link>
-        </p>
-
+        <p className="text-gray-300 text-center mt-4">Already have an account?</p>
+        <div className="w-full flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#2727A] text-white mt-4">
+          <Link href="/auth/signin" >
+            Sign in
+          </Link>
+        </div>
       </div>
     </Layout>
   );

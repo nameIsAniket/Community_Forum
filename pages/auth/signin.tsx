@@ -24,7 +24,7 @@ export default function SignIn({ providers }: SignInProps) {
 
   return (
     <Layout title="Sign In">
-      <div className="max-w-md mx-auto my-16 p-6 bg-white rounded-lg shadow-md">
+      <div className="max-w-md mx-auto my-16 p-6 bg-black border border-gray-700 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold text-center mb-6">Sign in to Community Forum</h1>
         <div className="space-y-4">
           {providers && Object.values(providers).map((provider) => (
@@ -35,25 +35,27 @@ export default function SignIn({ providers }: SignInProps) {
                     <label className="block text-sm font-medium text-gray-700">Email</label>
                     <input
                       type="email"
+                      placeholder='projectforum@mm.com'
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                      className="mt-1 block w-full h-10 border-gray-600 bg-gray-800 text-white rounded-md shadow-sm px-3"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Password</label>
+                    <label className="block text-sm font-semibold text-gray-300 mb-2">Password</label>
                     <input
                       type="password"
+                      placeholder="********"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                      className="mt-1 block w-full h-10 border-gray-600 bg-gray-800 text-white rounded-md shadow-sm px-3"
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="w-full flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#2727A] text-white mt-8"
                   >
                     Sign in with {provider.name}
                   </button>
@@ -61,7 +63,7 @@ export default function SignIn({ providers }: SignInProps) {
               ) : (
                 <button
                   onClick={() => signIn(provider.id, { callbackUrl: '/' })}
-                  className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="w-full flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#2727A] text-white mt-2"
                 >
                   Sign in with {provider.name}
                 </button>

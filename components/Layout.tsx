@@ -15,7 +15,17 @@ export default function Layout({ children, title = 'Community Forum' }: LayoutPr
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <main className="container mx-auto py-8 px-4">{children}</main>
+      <div className="flex bg-black min-h-screen">
+        <aside className="w-3/12 bg-black p-4">
+          {/* Left Sidebar content here */}
+        </aside>
+        <main className="w-6/12 bg-black container mx-auto py-8 px-4">
+          {children}
+        </main>
+        <aside className="w-3/12 bg-black p-4">
+          {/* Right Sidebar content here */}
+        </aside>
+      </div>
     </>
   );
 }

@@ -6,7 +6,7 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
+    <nav className="bg-black text-white p-4 border-b border-gray-700">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold">
           Community Forum
