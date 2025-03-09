@@ -61,7 +61,7 @@ export default function CreateForum() {
 
   return (
     <Layout title="Create New Forum">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto mt-5">
         <h1 className="text-3xl font-bold mb-6">Create New Forum</h1>
         
         {error && (
@@ -72,7 +72,7 @@ export default function CreateForum() {
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="title" className="block text-sm font-semibold text-white-700 mb-1">
               Title
             </label>
             <input
@@ -80,13 +80,13 @@ export default function CreateForum() {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none"
               required
             />
           </div>
           
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="description" className="block text-sm font-semibold text-white-700 mb-1">
               Description
             </label>
             <textarea
@@ -94,13 +94,13 @@ export default function CreateForum() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={5}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none"
               required
             />
           </div>
           
           <div>
-            <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="tags" className="block text-sm font-semibold text-white-700 mb-1">
               Tags (optional, comma-separated)
             </label>
             <input
@@ -109,7 +109,7 @@ export default function CreateForum() {
               value={tags}
               onChange={(e) => setTags(e.target.value)}
               placeholder="e.g. javascript, react, nextjs"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none"
             />
           </div>
           
@@ -117,8 +117,7 @@ export default function CreateForum() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
-                loading ? 'opacity-70 cursor-not-allowed' : ''
+              className={`flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#27272A] text-white' : ''
               }`}
             >
               {loading ? 'Creating...' : 'Create Forum'}

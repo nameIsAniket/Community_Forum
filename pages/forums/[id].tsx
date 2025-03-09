@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface User {
   id: string;
@@ -172,20 +173,20 @@ export default function ForumDetail() {
 
   return (
     <Layout title={`${forum.title} | Community Forum`}>
-      <div className="mb-8">
+      <div className="mb-8 mt-4">
         <div className="flex justify-between items-start mb-4">
           <h1 className="text-3xl font-bold">{forum.title}</h1>
           {isOwner && (
             <div className="flex space-x-2">
               <Link
                 href={`/forums/${forum.id}/edit`}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
+                className="flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#27272A] text-white"
               >
                 Edit
               </Link>
               <button
                 onClick={handleDelete}
-                className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
+                className="flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#27272A] text-white"
               >
                 Delete
               </button>
@@ -196,7 +197,7 @@ export default function ForumDetail() {
         <div className="flex items-center text-sm text-gray-500 mb-4">
           <div className="flex items-center mr-4">
             {forum.user.image ? (
-              <img
+              <Image
                 src={forum.user.image}
                 alt={forum.user.name || 'User'}
                 className="w-6 h-6 rounded-full mr-2"
@@ -227,7 +228,7 @@ export default function ForumDetail() {
         )}
       </div>
       
-      <div className="border-t pt-6">
+      <div className="border-t border-gray-700 pt-6">
         <h2 className="text-2xl font-bold mb-4">Comments</h2>
         
         {session ? (
@@ -237,7 +238,7 @@ export default function ForumDetail() {
                 value={commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}
                 placeholder="Write a comment..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none"
                 rows={3}
                 required
               />
@@ -245,7 +246,7 @@ export default function ForumDetail() {
             <button
               type="submit"
               disabled={submitting}
-              className={`bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+              className={`flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#27272A] text-white ${
                 submitting ? 'opacity-70 cursor-not-allowed' : ''
               }`}
             >
@@ -253,18 +254,12 @@ export default function ForumDetail() {
             </button>
           </form>
         ) : (
-          <div className="bg-gray-100 p-4 rounded mb-6">
-            <p>
-              Please{' '}
-              <button
+          <button
                 onClick={() => router.push('/auth/signin')}
-                className="text-blue-600 hover:underline"
+                className="w-full flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#27272A] text-white my-4"
               >
-                sign in
-              </button>{' '}
-              to comment.
-            </p>
-          </div>
+                Please sign in to comment
+          </button>
         )}
         
         {forum.comments.length === 0 ? (
@@ -277,7 +272,7 @@ export default function ForumDetail() {
               <li key={comment.id} className="mb-4">
                 <div className="flex items-start">
                   {comment.user.image ? (
-                    <img
+                    <Image
                       src={comment.user.image}
                       alt={comment.user.name || 'User'}
                       className="w-8 h-8 rounded-full mr-2"
@@ -292,15 +287,17 @@ export default function ForumDetail() {
                         {new Date(comment.createdAt).toLocaleString()}
                       </span>
                     </div>
-                    <p className="mt-1">{comment.content}</p>
-                    {session?.user?.id === comment.user.id && (
-                      <button
-                        onClick={() => handleDeleteComment(comment.id)}
-                        className="text-red-600 hover:underline text-sm mt-2"
-                      >
-                        Delete
-                      </button>
-                    )}
+                    <div className="flex justify-between items-center mt-1 border-b border-gray-700 pb-2">
+                      <p>{comment.content}</p>
+                      {session?.user?.id === comment.user.id && (
+                        <button
+                          onClick={() => handleDeleteComment(comment.id)}
+                          className="flex items-center justify-center py-1 px-2 border border-gray-600 rounded-md shadow-sm bg-[#27272A] text-white "
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </li>

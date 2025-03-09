@@ -16,16 +16,27 @@ interface SignInProps {
 export default function SignIn({ providers }: SignInProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await signIn('credentials', { email, password, callbackUrl: '/' })
+    try {
+      const result = await signIn('credentials', { email, password, redirect: false })
+      if (result?.error) {
+        setError('Sign-in failed. Please check your credentials and try again.')
+      } else {
+        window.location.href = '/'
+      }
+    } catch {
+      setError('Sign-in failed. Please check your credentials and try again.')
+    }
   }
 
   return (
     <Layout title="Sign In">
       <div className="max-w-md mx-auto my-16 p-6 bg-black border border-gray-700 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold text-center mb-6">Sign in to Community Forum</h1>
+        
         <div className="space-y-4">
           {providers && Object.values(providers).map((provider) => (
             <div key={provider.id} className="flex justify-center">
@@ -59,6 +70,7 @@ export default function SignIn({ providers }: SignInProps) {
                   >
                     Sign in with {provider.name}
                   </button>
+                  {error && <p className="text-red-500 text-center mt-4">{error}</p>}
                 </form>
               ) : (
                 <button

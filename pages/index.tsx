@@ -53,7 +53,7 @@ export default function Home() {
           {forums.map((forum) => (
             <div
               key={forum.id}
-              className="border-b border-gray-700 p-6 shadow-sm hover:shadow-md transition"
+              className="border-b border-gray-700 p-4 shadow-sm hover:shadow-md transition"
             >
               <Link href={`/forums/${forum.id}`}>
                 <h2 className="text-xl font-semibold mb-2">{forum.title}</h2>

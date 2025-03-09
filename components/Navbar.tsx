@@ -6,20 +6,14 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <nav className="bg-black text-white p-4 border-b border-gray-700">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav className="bg-black text-white p-4 ">
+      <div className="container mx-auto flex justify-between items-center ">
         <Link href="/" className="text-xl font-bold">
           Community Forum
         </Link>
         <div className="flex items-center space-x-4">
-          <Link href="/" className="hover:text-gray-300">
-            Home
-          </Link>
           {session ? (
             <>
-              <Link href="/create-forum" className="hover:text-gray-300">
-                Create Forum
-              </Link>
               <div className="flex items-center">
                 {session.user?.image ? (
                   <Image
@@ -36,19 +30,18 @@ export default function Navbar() {
               </div>
               <button
                 onClick={() => signOut()}
-                className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded"
-              >
+                className="flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#27272A] text-white">
                 Sign Out
               </button>
             </>
           ) : (
             <>
-              <Link href="/auth/signup" className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded">
+              <Link href="/auth/signup" className="flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#27272A] text-white">
                 Sign Up
               </Link>
               <button
                 onClick={() => signIn()}
-                className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded"
+                className="flex items-center justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-[#27272A] text-white"
               >
                 Sign In
               </button>
