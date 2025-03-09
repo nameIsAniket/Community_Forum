@@ -19,7 +19,7 @@ export default function EditForum() {
 
     async function fetchForum() {
       try {
-        const response = await fetch(`/api/forums/${id}`);
+        const response = await fetch(`/api/proxy/forums/${id}`);
         if (response.ok) {
           const forum = await response.json();
           
@@ -74,7 +74,7 @@ export default function EditForum() {
     setError('');
     
     try {
-      const response = await fetch(`/api/forums/${id}`, {
+      const response = await fetch(`/api/proxy/forums/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
