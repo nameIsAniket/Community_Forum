@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"tsx server/index.ts\"",
+    "dev": "next dev && tsx server/index.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -35,8 +35,7 @@
     "eslint-config-next": "15.2.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.0.11",
-    "typescript": "^5",
-    "concurrently": "^7.0.0"
+    "typescript": "^5"
   },
   "type": "module"
 }
